@@ -1,0 +1,9 @@
+The data in pressure-mishima-sumita files consists in the coefficients of the polynomial characterizing
+
+P = sum_{i,j} A_ij V^i t^i
+
+where P is pressure [bar], V is volume [cm^3/gr], and t is temperature [K]. Note that t is T/300, for T in Kelvin (absolute temperature). The normal file has a matrix of 7x7 for polynomials of order 6. The 'large' file is of order 7.
+
+The details of this expression are avaiable at the following work: 
+
+O Mishima, T Sumita. Equation of State of Liquid Water Written by Simple Experimental Polynomials and the Liquid−Liquid Critical Point. J Phys Chem, 2023.
