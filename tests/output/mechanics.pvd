@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<VTKFile type="Collection" version="0.1" byte_order="LittleEndian">
+<Collection>
+<DataSet timestep="0" file="mechanics/mechanics_0.pvtu" />
+<DataSet timestep="1" file="mechanics/mechanics_1.pvtu" />
+<DataSet timestep="2" file="mechanics/mechanics_2.pvtu" />
+<DataSet timestep="3" file="mechanics/mechanics_3.pvtu" />
+<DataSet timestep="4" file="mechanics/mechanics_4.pvtu" />
+<DataSet timestep="5" file="mechanics/mechanics_5.pvtu" />
+<DataSet timestep="6" file="mechanics/mechanics_6.pvtu" />
+<DataSet timestep="7" file="mechanics/mechanics_7.pvtu" />
+<DataSet timestep="8" file="mechanics/mechanics_8.pvtu" />
+<DataSet timestep="9" file="mechanics/mechanics_9.pvtu" />
+<DataSet timestep="10" file="mechanics/mechanics_10.pvtu" />
+<DataSet timestep="11" file="mechanics/mechanics_11.pvtu" />
+<DataSet timestep="12" file="mechanics/mechanics_12.pvtu" />
+<DataSet timestep="13" file="mechanics/mechanics_13.pvtu" />
+<DataSet timestep="14" file="mechanics/mechanics_14.pvtu" />
+<DataSet timestep="15" file="mechanics/mechanics_15.pvtu" />
+<DataSet timestep="16" file="mechanics/mechanics_16.pvtu" />
+<DataSet timestep="17" file="mechanics/mechanics_17.pvtu" />
+<DataSet timestep="18" file="mechanics/mechanics_18.pvtu" />
+</Collection>
+</VTKFile>
