@@ -57,7 +57,7 @@ def solveFibers(u, bcs=None, eta=1.0, theta0=0.0, verbose=True, rtol=1e-6, stab=
 
     # Set up solver
     prob = LinearVariationalProblem(
-        DF, -F_err, dduu, bcs=bcs, constant_jacobian=False)
+        DF, -F_err, dduu, bcs=bcs, constant_jacobian=True)
     solver = LinearVariationalSolver(prob, solver_parameters=params)
     # Effective only with m=1... sometimes
     #anderson = AndersonAcceleration(0, 0)
