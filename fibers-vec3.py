@@ -87,7 +87,7 @@ def generateLVFibers(mesh, output=False, verbose=False):
     d.interpolate(cross(d_trans, d_ab))
     d_vec.interpolate(cross(d_trans_vec, d_ab_vec))
 
-    # FIbers
+    # Fibers
 
     # Rotation matrices
     def R1(alpha): return as_matrix(((cos(alpha), -sin(alpha), 0.0),
@@ -221,7 +221,7 @@ def generateLVFibers(mesh, output=False, verbose=False):
         # Export Paraview file
         File("output/fibers-vec_3.pvd").write(frot3, R, d_ab3, f2, alpha_int, phi_trans, phi_ab, d_trans,
                                               d_trans_vec, d_ab, d_ab_vec, d, d_vec, f, f_vec, F)
-    return f_vec, d_ab_vec, cf_vec
+    return
 
 if __name__ == "__main__": 
 
