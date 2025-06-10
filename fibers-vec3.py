@@ -157,10 +157,16 @@ def generateLVFibers(mesh, output=False, verbose=False):
             Rvec = v1 - dot(v1, centerline) * centerline
             R = sqrt(Rvec**2)
             return R * cos(getElevation(vec))
-        
+
+        clairaut = Function(Vs, name="clairaut")
+        clairaut.interpolate(getClairaut(f))
+        clairaut_vec = Function(Vs, name="clairaut_vec")
+        clairaut_vec.interpolate(getClairaut(f_vec))
+        clairaut_f2 = Function(Vs, name="clairaut_rotFO")
+        clairaut_f2.interpolate(getClairaut(f2))
         
         # Export Paraview file
-        File("output/fibers-vec_3.pvd").write(f2, alpha_int, phi_trans, phi_ab, d_trans,
+        File("output/fibers-vec_3.pvd").write(clairaut, clairaut_vec, clairaut_f2, f2, alpha_int, phi_trans, phi_ab, d_trans,
                                               d_trans_vec, d_ab, d_ab_vec, d, d_vec, f, f_vec, F)
     return
 
