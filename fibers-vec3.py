@@ -57,7 +57,7 @@ def generateLVFibers(mesh, output=False, verbose=False):
     bcs = [DirichletBC(Vs, Constant(1.0), EPI), DirichletBC(Vs, Constant(0.0), ENDO)]
     solve(a == L, phi_trans, bcs=bcs, solver_parameters={
           "ksp_type": "cg", "pc_type": "gamg"})
-    d_trans.interpolate(grad(phi_trans)/(Constant(EPS) + sqrt(grad(phi_trans)**2)))
+    d_trans.interpolate(-grad(phi_trans)/(Constant(EPS) + sqrt(grad(phi_trans)**2)))
 
     # Vectorial (FO)
     bcs = [DirichletBC(V, N_fun, EPI), DirichletBC(V, -N_fun, ENDO)]
