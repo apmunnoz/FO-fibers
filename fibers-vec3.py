@@ -105,21 +105,21 @@ def generateLVFibers(mesh, output=False, verbose=False):
     Q = B * R1(alpha(phi_trans)) * B.T
     f.interpolate(Q * d)
 
-    # Vectorial (FO1)
+    # Vectorial (FO)
     Q_epi = B_vec * R1(alpha_epi) * B_vec.T
     Q_endo = B_vec * R1(alpha_endo) * B_vec.T
     bcs = [DirichletBC(V, Q_epi * d_vec, EPI), DirichletBC(V, Q_endo * d_vec, ENDO)]
     solveFibers(f_vec, bcs=bcs, eta=1, verbose=verbose, ds_N=None)
 
-    # Vectorial (FO2)
+    # Vectorial (ROT)
     alpha_int = Function(Vs, name="alpha")
     a = inner(grad(dus), grad(vs)) * dx
     L = Constant(0.0) * vs * dx
     bcs = [DirichletBC(Vs, alpha_epi, EPI), DirichletBC(Vs, alpha_endo, ENDO)]
     solve(a == L, alpha_int, bcs=bcs, solver_parameters={
           "ksp_type": "cg", "pc_type": "gamg"})
-    f2 = Function(V, name="fiber_vec2")
-    f2.interpolate(cos(alpha_int) * d_vec + sin(alpha_int) * cross(-d_trans, d_vec))
+    f2 = Function(V, name="fiber_ROT")
+    f2.interpolate(cos(alpha_int) * d_vec + sin(alpha_int) * cross(-d_trans_vec, d_vec))
 
     # Output
     if output:
@@ -138,22 +138,7 @@ def generateLVFibers(mesh, output=False, verbose=False):
         def getElevation(vec):
             z = vec[2]
             r = sqrt(vec**2) # 1 for FO solutions, here for correctness
-            return asin(z/r)# + Constant(pi/2)
-
-        def getAzimuth(vec):
-            x = vec[0]
-            y = vec[1]
-            return sign(y) * acos(x / sqrt(x*x+y*y))
-
-
-        #elevation = Function(Vs, name="elevation")
-        #elevation.interpolate(getElevation(f))
-        #elevation_vec = Function(Vs, name="elevation_vec")
-        #elevation_vec.interpolate(getElevation(f_vec))
-        #azimuth = Function(Vs, name="azimuth")
-        #azimuth.interpolate(getAzimuth(f))
-        #azimuth_vec = Function(Vs, name="azimuth_vec")
-        #azimuth_vec.interpolate(getAzimuth(f_vec))
+            return asin(z/r)
 
         # Compute centerline for Clairaut
         X = SpatialCoordinate(mesh)
@@ -172,54 +157,10 @@ def generateLVFibers(mesh, output=False, verbose=False):
             Rvec = v1 - dot(v1, centerline) * centerline
             R = sqrt(Rvec**2)
             return R * cos(getElevation(vec))
-
-        def getClairaut2(vec):
-            v1 = X - Xv
-            Rvec = v1 - dot(v1, centerline) * centerline
-            R = sqrt(Rvec**2)
-            return R * cos(vec)
-
-        
-        #clair2 = Function(Vs, name="clairaut_cos(alpha)")
-        #clair2.interpolate(getClairaut2(alpha_int))
-
-        #clair3 = Function(Vs, name="clairaut_sin(alpha)")
-        #clair3.interpolate(getClairaut_alpha(alpha_int))
-        #####################################################################################
-        ## Evaluating solutions model
-        # Apicobasal
-        n_hedg = Function(V, name="n_axis")
-        denom = sqrt(dot(X-apex, X-apex))
-        n_hedg.interpolate((X-apex)/(Constant(EPS)+denom))
-
-        d_ab3 = Function(V, name="d_ab m3")
-        temp = n_hedg - dot(n_hedg, d_trans_vec)*d_trans_vec
-        norma2= sqrt(inner(temp, temp))
-        d_ab3.interpolate(temp/norma2)
-
-        d3 = Function(V, name= "transversal 3")
-        d3.interpolate(cross(d_trans_vec, d_ab3))
-
-        d3dotd = Function(Vs, name= "d3 dot d_vec")
-        d3dotd.interpolate(dot(d3, d_vec))
-        
-        frot3 = Function(V, name="fiber_ev")
-        frot3.interpolate(cos(alpha_int) * d3 + sin(alpha_int) * cross(-d_trans, d3))
-        
-
-        # Hypothesis for rotation as FO solutions
-        R = Function(Vs, name="R")
-        D = as_vector(((d[0], d_ab[0]), (d[1], d_ab[1]), (d[2], d_ab[2])))
-        LD = lap(D)
-        r = sqrt(X[0]*X[0] + X[1]*X[1])
-        unit_r = as_vector([X[0] / r, X[1] / r])
-        R_exp = -0.5 * inner(LD.T*D - D.T * LD, outer(unit_r, unit_r))
-        R.interpolate(R_exp)
-
         
         
         # Export Paraview file
-        File("output/fibers-vec_3.pvd").write(frot3, R, d_ab3, f2, alpha_int, phi_trans, phi_ab, d_trans,
+        File("output/fibers-vec_3.pvd").write(f2, alpha_int, phi_trans, phi_ab, d_trans,
                                               d_trans_vec, d_ab, d_ab_vec, d, d_vec, f, f_vec, F)
     return
 
