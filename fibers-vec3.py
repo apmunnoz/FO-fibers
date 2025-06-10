@@ -30,14 +30,14 @@ def generateLVFibers(mesh, output=False, verbose=False):
     # Solution vectors
     phi_trans = Function(Vs, name="phi_transmural")
     phi_ab = Function(Vs, name="phi_apicobasal")
-    d_trans_vec = Function(V, name="transmural_vec")
-    d_ab_vec = Function(V, name="apicobasal_vec")
-    d_trans = Function(V, name="transmural")
-    d_ab = Function(V, name="apicobasal")
-    d_vec = Function(V, name="transversal_vec")
-    d = Function(V, name="transversal")
-    f_vec = Function(V, name="fiber_vec")
-    f = Function(V, name="fiber")
+    d_trans_vec = Function(V, name="transmural_FO")
+    d_ab_vec = Function(V, name="apicobasal_FO")
+    d_trans = Function(V, name="transmural_RBM")
+    d_ab = Function(V, name="apicobasal_RBM")
+    d_vec = Function(V, name="transversal_FO")
+    d = Function(V, name="transversal_RBM")
+    f_vec = Function(V, name="fiber_FO")
+    f = Function(V, name="fiber_RBM")
 
     # Normal vector as a vertexwise function
     N_fun = generateNormalFunction(mesh, fiber_family, fiber_deg)
@@ -158,15 +158,15 @@ def generateLVFibers(mesh, output=False, verbose=False):
             R = sqrt(Rvec**2)
             return R * cos(getElevation(vec))
 
-        clairaut = Function(Vs, name="clairaut")
+        clairaut = Function(Vs, name="clairaut_RBM")
         clairaut.interpolate(getClairaut(f))
-        clairaut_vec = Function(Vs, name="clairaut_vec")
+        clairaut_vec = Function(Vs, name="clairaut_FO")
         clairaut_vec.interpolate(getClairaut(f_vec))
-        clairaut_f2 = Function(Vs, name="clairaut_rotFO")
+        clairaut_f2 = Function(Vs, name="clairaut_ROT")
         clairaut_f2.interpolate(getClairaut(f2))
         
         # Export Paraview file
-        File("output/fibers-vec_3.pvd").write(clairaut, clairaut_vec, clairaut_f2, f2, alpha_int, phi_trans, phi_ab, d_trans,
+        File("output/fibers-vec_test.pvd").write(clairaut, clairaut_vec, clairaut_f2, f2, alpha_int, phi_trans, phi_ab, d_trans,
                                               d_trans_vec, d_ab, d_ab_vec, d, d_vec, f, f_vec, F)
     return
 
